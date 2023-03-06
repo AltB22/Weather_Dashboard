@@ -2,23 +2,19 @@
 
 // Weather_Dashboard API Key = {eaf99af1f4ee974c35e4e4ec7368e660};
 
-
 var openWeatherApiKey = "eaf99af1f4ee974c35e4e4ec7368e660";
-
-
-// var searchedCity = document.getElementById("")
 var searchWeatherButton = document.getElementById("search-by-city-button") 
+var clearCityHistoryButton = document.getElementById("clear-history-btn") 
 
 function getWeather(event, searchedCity) {
     event.preventDefault();
-    var searchedCity = document.getElementById("searched-city-input").value;
-    var openWeatherUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${searchedCity}&appid=${openWeatherApiKey}`;
-    console.log(searchedCity);
-    // if(location) {
-    //     openWeatherUrl = ''
-    // }
-   
 
+    var searchedCity = document.getElementById("searched-city-input").value;
+
+    var openWeatherUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${searchedCity}&appid=${openWeatherApiKey}`;
+
+    console.log(searchedCity);
+ 
     document.getElementById("searched-city-input").innerHTML; 
     fetch(openWeatherUrl)
     .then(function (response) {
@@ -26,13 +22,20 @@ function getWeather(event, searchedCity) {
         return response//.json();
         
     })
-    // .then (function (cityData){
+    .then (function (cityData){
    
-        // console.log(cityData);
-    // }
-    // )
+        console.log(cityData);
+    }
+    )
 };
 
+function clearHistory(event) {
+    event.preventDefault();
+    var localStorageKey = event.target.getElementById()//needs clarity
+    localStorage.removeItem(localStorageKey);
+    event.target.remove();
+}
 
 
-searchWeatherButton.addEventListener('click',getWeather);//Event listener for Search Drink Button
+searchWeatherButton.addEventListener('click',getWeather);//Event listener for city search Button
+clearCityHistoryButton.addEventListener('click', clearHistory);
