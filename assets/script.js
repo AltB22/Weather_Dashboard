@@ -6,12 +6,12 @@ var openWeatherApiKey = "eaf99af1f4ee974c35e4e4ec7368e660";
 var searchWeatherButton = document.getElementById("search-by-city-button") 
 var clearCityHistoryButton = document.getElementById("clear-history-btn") 
 
-function getWeather(event, searchedCity) {
+function getWeatherByCity(event, searchedCity) {
     event.preventDefault();
 
     var searchedCity = document.getElementById("searched-city-input").value;
 
-    var openWeatherUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${searchedCity}&appid=${openWeatherApiKey}`;
+    var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchedCity + "&appid=" + openWeatherApiKey;
 
     console.log(searchedCity);
  
@@ -37,5 +37,5 @@ function clearHistory(event) {
 }
 
 
-searchWeatherButton.addEventListener('click',getWeather);//Event listener for city search Button
+searchWeatherButton.addEventListener('click',getWeatherByCity);//Event listener for city search Button
 clearCityHistoryButton.addEventListener('click', clearHistory);
