@@ -15,18 +15,21 @@ function getWeatherByCity(event, searchedCity) {
 
     console.log(searchedCity);
  
-    document.getElementById("searched-city-input").innerHTML; 
+    // document.getElementById("searched-city-input").innerHTML;
     fetch(openWeatherUrl)
     .then(function (response) {
-        console.log(response.json())
-        return response//.json();
-        
+        // console.log(response.json())
+        return response.json();
     })
-    .then (function (cityData){
-   
-        console.log(cityData);
-    }
-    )
+    .then(function (cityWeatherData) {
+        console.log(cityWeatherData)
+        for(let i = 0 ;i < cityWeatherData.main.length; i++) {
+            var cityContainerEl = document.createElement('div')
+
+            
+        }
+    })
+       
 };
 
 function clearHistory(event) {
