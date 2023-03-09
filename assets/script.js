@@ -10,8 +10,13 @@ function getWeatherByCity(event, searchedCity) {
     var searchedCity = document.getElementById("searched-city-input").value;
 
     // let name = event.target.textContent; 
-    if (!localStorage.getItem(searchedCity)) {
+    if(!localStorage.getItem(searchedCity)) {
       localStorage.setItem(searchedCity, JSON.stringify(searchedCity));
+      
+      if(localStorageCityHistory !== null) {
+        var cityHistoryContainterEl = document.getElementById("city-history")
+        cityHistoryContainterEl.setAttribute('id', 'city-btn')
+      }
     }
 
 
