@@ -9,6 +9,14 @@ function getWeatherByCity(event, searchedCity) {
 
     var searchedCity = document.getElementById("searched-city-input").value;
 
+    // let name = event.target.textContent; 
+    if (!localStorage.getItem(searchedCity)) {
+      localStorage.setItem(searchedCity, JSON.stringify(searchedCity));
+    }
+
+
+    
+
     var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchedCity + "&appid=" + openWeatherApiKey + "&units=imperial";
 
     console.log(searchedCity);
@@ -21,28 +29,32 @@ function getWeatherByCity(event, searchedCity) {
     .then(function (cityWeatherData) {
         console.log(cityWeatherData)
         console.log(cityWeatherData.main.temp)
-        // for(let i = 0 ;i < cityWeatherData.main.length; i++) 
-        // {
+        for(let i = 0 ;i < cityWeatherData.main.length; i++) 
+        {
             var cityContainerEl = document.createElement('input')
             cityContainerEl.textContent = cityWeatherData.name
             console.log(cityWeatherData.name)
 
 
             
-        // }
+        }
     })
        
 };
 
-function renderCityHistory(){
+function getLocalStorage(){
+    var localStorageCities = {...localStorage };
+    for(i = 0; i < localStorageCities.length; i++) {
 
-}
+    }
+
+};
 
 function clearHistory(event) {
     event.preventDefault();
     localStorage.clear();
     localStorageCityHistory = [];
-    renderCityHistory();
+    getLocalStorage();
    
 }
 
