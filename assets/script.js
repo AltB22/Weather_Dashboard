@@ -22,8 +22,6 @@ function getWeatherByCity(event, searchedCity) {
         //   }
     }
 
-    console.log(searchedCity);
-
     fetch(openWeatherUrl)
         .then(function (response) {
 
