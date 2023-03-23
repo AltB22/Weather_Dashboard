@@ -1,28 +1,30 @@
 header {
   text-align: center;
-  background-color: rgb(8, 67, 217);
+  background-color: rgb(6, 123, 106);
   color: white;
 }
 
 .container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
 }
 
 h3 {
-  background-color: rgb(8, 67, 217);
+  background-color: rgb(6, 123, 106);
   text-align: center;
   color: white;
 }
 
 #search-parent {
-  width: 15%;
+  display: inline-block;
+  width: 50%;
 }
 
 #forecast-parent {
-  width: 85%;
+  display: inline-block;
+  width: 50%;
 }
 
 #clear-history-btn {
@@ -35,15 +37,17 @@ h3 {
 }
 
 button {
-  background-color: rgb(8, 67, 217);
+  background-color: rgb(6, 123, 106); 
   color: white;
   border-radius: 5%;
 }
 
+
+
 #footer {
   margin-top: auto;
   text-align: center;
-  background-color: rgb(8, 67, 217);
+  background-color: rgb(6, 123, 106);
   color: white;
  
 }
