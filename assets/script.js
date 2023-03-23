@@ -3,7 +3,8 @@ var openWeatherApiKey = "eaf99af1f4ee974c35e4e4ec7368e660";
 var searchWeatherButton = document.getElementById("search-by-city-button")
 var clearCityHistoryButton = document.getElementById("clear-history-btn")
 let localStorageCityHistory = JSON.parse(localStorage.getItem("search")) || [];
-
+var searchHistoryEl = document.getElementById("city-history")
+var cityButton = document.createElement('button');
 
 function getWeatherByCity(event, searchedCity) {
     event.preventDefault();
@@ -32,29 +33,34 @@ function getWeatherByCity(event, searchedCity) {
         })
 
 };
-function renderCityForecast(event) {
+function renderTodayForecast(event) {
+event.preventDefault();
+var currentWeather = document.getElementById("current-weather");
+var todayWeatherCity = document.createElement('p');
+if(cityButton) {
+    todayWeatherCity = cityButton.textContent;
+}
+currentWeather.append(todayWeatherCity)
 
 }
 
 //Maybe adjust this later to make unique key integer and use the corresponding value as the button text?
 let getLocalStorage = () => {
-    // var localStorageCities = { ...localStorage };
+    // var localStorageCities = (localStorage, key);
     // for (i = 0; i < localStorageCities.length; i++) {
         Object.keys(localStorage).forEach((key) => {
-        var searchHistoryEl = document.getElementById("city-history")
-        console.log(searchHistoryEl)
-        var cityButton = document.createElement('button');
+        
         cityButton.setAttribute('id', "city-btn");
-        cityButton.addEventListener("click", renderCityForecast);
+        cityButton.addEventListener("click", renderTodayForecast);
         var localStorageCity = JSON.parse(localStorage.getItem(key));
-        cityButton.textContent = localStorageCity
-        // cityButton.innerText = localStorage(key)
+        cityButton.textContent = localStorageCity;
         searchHistoryEl.append(cityButton);
        
 
-    });
+    }
+    );
 };
-
+// };
 
 function clearHistory(event) {
     event.preventDefault();
