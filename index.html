@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" -->
+    <!-- crossorigin="anonymous"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"> -->
     <link rel="stylesheet" href="./assets/style.css">
     <title>Weather Dashboard</title>
 </head>
@@ -17,61 +17,38 @@
         <h1>Weather Dashboard</h1>
     </header>
     <main class="container-fluid row-2">
-        <aside id="search-parent">
-        <div class="row"></div>
-        <div class="form-container">
-            <h5 class="mt-1">Search Weather by City:</h5>
-            <div class="input-group mb-3">
-                <input id="searched-city-input" type="text" class="form-control" placeholder="Enter a city"
-                    aria-label="Enter a city">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button" id="search-by-city-button">
-                        <i class="fas fa-search"></i>
-                    </button>
+        <div class="container">
+            <aside id="search-parent">
+                <div class="row"></div>
+                <div class="form-container">
+                    <h3 class="mt-1">Search Weather by City:</h3>
+                    <form class="input-group mb-3">
+                        <input id="searched-city-input" type="text" class="form-control" placeholder="Enter a city"
+                            aria-label="Enter a city">
+                        </input>
+                        <button id="search-by-city-button">Search</button>
                 </div>
-            </div>
-            <button class="btn btn-primary mb-3" type="button" id="clear-history-btn">Clear City History</button>
+                    </form>
+               
+                <button class="btn btn-primary mb-3" type="button" id="clear-history-btn">Clear City
+                    History</button>
         </div>
         <br>
         <section id="city-history"></section>
-    </aside>
-    <br>
+        </aside>
+        <br>
         <section id="forecast-parent">
-            <div class="row mr-0">
-                <div class="col-lg-11 card m-3 d-none" id="today-weather">
-                    <div class="card-body">
-                        <h3 id="city-name" class="city-name align-middle"></h3>
-                        <img id="current-pic" alt="">
-                        <p id="temperature"></p>
-                        <p id="weather"></p>
-                        <p id="humidity"></p>
-                        <p id="wind-speed"></p>
-                        <p id="wind-direction"></p>
-                    </div>
-                </div>
-            </div>
-        
-            <div class="row d-none" id="fiveday-header">
-                <div class="col-12">
-                    <h3>5 Day Forecast</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
-                <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
-                <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
-                <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
-                <div class="col-md-2 forecast bg-primary text-white m-2 rounded"></div>
-            </div>
+            <div id="one-day-forecast"></div>
+
+        </section>
         </div>
-        </div>
-        </div>
-        <footer id="footer">
-            <p>Made by William Massie 2023</p>
-            <a href="https://github.com/AltB22/Weather_Dashboard">GitHub</a>
-        </footer>
+    </main>
+    <footer class="row-3" id="footer">
+        <p>Page Made by William Massie - 2023</p>
+        <a href="https://github.com/AltB22/Weather_Dashboard">GitHub</a>
+    </footer>
 </body>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
 <script src="./assets/script.js"></script>
 
 
