@@ -32,7 +32,11 @@ function getWeatherByCity(event, searchedCity) {
         })
 
 };
+function renderCityForecast(event) {
 
+}
+
+//Maybe adjust this later to make unique key integer and use the corresponding value as the button text?
 let getLocalStorage = () => {
     // var localStorageCities = { ...localStorage };
     // for (i = 0; i < localStorageCities.length; i++) {
@@ -41,6 +45,7 @@ let getLocalStorage = () => {
         console.log(searchHistoryEl)
         var cityButton = document.createElement('button');
         cityButton.setAttribute('id', "city-btn");
+        cityButton.addEventListener("click", renderCityForecast);
         var localStorageCity = JSON.parse(localStorage.getItem(key));
         cityButton.textContent = localStorageCity
         // cityButton.innerText = localStorage(key)
@@ -59,7 +64,8 @@ function clearHistory(event) {
 
 }
 
-getLocalStorage();
+
 
 searchWeatherButton.addEventListener('click', getWeatherByCity);//Event listener for city search Button
 clearCityHistoryButton.addEventListener('click', clearHistory);//Event listener for clear history Button
+getLocalStorage();
