@@ -5,12 +5,14 @@ var clearCityHistoryButton = document.getElementById("clear-history-btn")
 let localStorageCityHistory = JSON.parse(localStorage.getItem("search")) || [];
 var searchHistoryEl = document.getElementById("city-history")
 var cityButton = document.createElement('button');
+var searchedCity = document.getElementById("searched-city-input").value;
+var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchedCity + "&appid=" + openWeatherApiKey + "&units=imperial";
+let weatherData = openWeatherUrl
 
 function getWeatherByCity(event, searchedCity) {
     event.preventDefault();
-    var searchedCity = document.getElementById("searched-city-input").value;
-    var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchedCity + "&appid=" + openWeatherApiKey + "&units=imperial";
-
+    
+    
     // let name = event.target.textContent; 
     if (!localStorage.getItem(searchedCity)) {
         localStorage.setItem(searchedCity, JSON.stringify(searchedCity));
@@ -25,11 +27,11 @@ function getWeatherByCity(event, searchedCity) {
         .then(function (cityWeatherData) {
             console.log(cityWeatherData)
             console.log(cityWeatherData.main)
-            for (let i = 0; i < cityWeatherData.main.length; i++) {
-                var cityContainerEl = document.createElement('input')
-                cityContainerEl.textContent = cityWeatherData.name
-                // console.log(cityWeatherData.name)
-            }
+            // for (let i = 0; i < cityWeatherData.main.length; i++) {
+            //     var cityContainerEl = document.createElement('input')
+            //     cityContainerEl.textContent = cityWeatherData.name
+            //     // console.log(cityWeatherData.name)
+            // }
         })
 
 };
@@ -37,10 +39,16 @@ function renderTodayForecast(event) {
 event.preventDefault();
 var currentWeather = document.getElementById("current-weather");
 var todayWeatherCity = document.createElement('p');
+var currentWeatherData = document.createElement('ul');
+var currentWeatherLineItems = document.createElement('li')
+currentWeatherLineItems.textContent = openWeatherUrl;
 if(cityButton) {
     todayWeatherCity = cityButton.textContent;
 }
-currentWeather.append(todayWeatherCity)
+currentWeather.append(todayWeatherCity);
+currentWeather.append(currentWeatherData);
+currentWeather.append(currentWeatherLineItems)
+
 
 }
 
