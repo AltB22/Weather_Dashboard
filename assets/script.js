@@ -7,7 +7,25 @@ var searchHistoryEl = document.getElementById("city-history");
 var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q="
 let weatherData = openWeatherUrl;
 
+//Maybe adjust this later to make unique key integer and use the corresponding value as the button text?
+let getLocalStorage = () => {
 
+    Object.keys(localStorage).forEach((key) => {
+        var todayWeatherButton = document.createElement('button');
+        todayWeatherButton.setAttribute('id', "city-btn");
+        todayWeatherButton.addEventListener("click", renderTodayForecast);
+        searchWeatherButton.addEventListener('click', renderTodayForecast);
+        var localStorageCity = JSON.parse(localStorage.getItem(key));
+        todayWeatherButton.textContent = localStorageCity;
+        searchHistoryEl.append(todayWeatherButton);
+        if(localStorage === null) {
+            return null;
+        }
+        renderTodayForecast();
+        
+    }
+    );
+};
 
 function getWeatherByCity(event) {
     event.preventDefault();
@@ -24,11 +42,10 @@ function getWeatherByCity(event) {
         .then(function (response) {
             // console.log(response.json());
             return response.json();
-
         })
-        .then(function (weatherData) {
 
-         
+        .then(function (weatherData) {
+            
             if(searchWeatherButton) {
               console.log(weatherData)
             }
@@ -45,7 +62,7 @@ function renderTodayForecast(event) {
     var currentWeather = document.getElementById("current-weather");
     var todayWeatherCity = document.createElement('h4');
     var currentWeatherData = document.createElement('ul');
-    var currentWeatherLineItems = document.createElement('li')
+    var currentWeatherLineItems = document.createElement('li');
     currentWeatherLineItems.textContent = weatherData;
     // console.log(weatherData)
     if (key === cityButton.textContent) {
@@ -55,6 +72,8 @@ function renderTodayForecast(event) {
     currentWeather.append(todayWeatherCity);
     currentWeather.append(currentWeatherData);
     currentWeather.append(currentWeatherLineItems);
+    
+    return;
 
 
     },
@@ -63,40 +82,28 @@ function renderTodayForecast(event) {
     
 }
 
-//Maybe adjust this later to make unique key integer and use the corresponding value as the button text?
-let getLocalStorage = () => {
 
-    Object.keys(localStorage).forEach((key) => {
-        var todayWeatherButton = document.createElement('button');
-        todayWeatherButton.setAttribute('id', "city-btn");
-        todayWeatherButton.addEventListener("click", renderTodayForecast);
-        searchWeatherButton.addEventListener('click', renderTodayForecast);
-        var localStorageCity = JSON.parse(localStorage.getItem(key));
-        todayWeatherButton.textContent = localStorageCity;
-        searchHistoryEl.append(todayWeatherButton);
-        renderTodayForecast();
-        
-    }
-    );
-};
-// };
+
 
 function clearHistory(event) {
     event.preventDefault();
     localStorage.clear();
     localStorageCityHistory = [];
-    // getLocalStorage();
-    
+    getLocalStorage();
+    // var localStorageKey = localStorage.key;
+    // localStorage.removeItem(localStorageKey);
+    // event.target.previousElementSibling.remove();
+    // event.target.remove();
 
 }
 
 
-getLocalStorage();
+
 // getWeatherByCity();
 searchWeatherButton.addEventListener('click', getWeatherByCity);//Event listener for city search Button
 
 clearCityHistoryButton.addEventListener('click', clearHistory);//Event listener for clear history Button
-
+getLocalStorage();
 
 
 
