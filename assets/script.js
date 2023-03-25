@@ -4,8 +4,9 @@ var searchWeatherButton = document.getElementById("search-by-city-button");
 var clearCityHistoryButton = document.getElementById("clear-history-btn");
 let localStorageCityHistory = JSON.parse(localStorage.getItem("search")) || [];
 var searchHistoryEl = document.getElementById("city-history");
-var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q="
-let weatherData = openWeatherUrl;
+
+// var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q="
+// let weatherData = openWeatherUrl;
 
 //Maybe adjust this later to make unique key integer and use the corresponding value as the button text?
 let getLocalStorage = () => {
@@ -18,37 +19,37 @@ let getLocalStorage = () => {
         var localStorageCity = JSON.parse(localStorage.getItem(key));
         cityWeatherButton.textContent = localStorageCity;
         searchHistoryEl.append(cityWeatherButton);
-        if(localStorage === null) {
+        if (localStorage === null) {
             return null;
         }
         renderTodayForecast();
-        
     }
     );
 };
 
+//Call to API passing the searched city name and concat it into the API along with the key and conversion to imperial system format.
 function getWeatherByCity(event) {
     event.preventDefault();
-  
-    var searchedCity = document.getElementById("searched-city-input").value;
-    var openWeatherUrlCity = openWeatherUrl + searchedCity + "&appid=" + openWeatherApiKey + "&units=imperial";
+    var searchCity = document.getElementById("searched-city-input").value;
+
+    var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&appid=" + openWeatherApiKey + "&units=imperial";
     // console.log(openWeatherUrlCity)
-   
-    if (!localStorage.getItem(searchedCity)) {
-        localStorage.setItem(searchedCity, JSON.stringify(searchedCity));
+
+    if (!localStorage.getItem(searchCity)) {
+        localStorage.setItem(searchCity, JSON.stringify(searchCity));
     }
 
-    fetch(openWeatherUrlCity)
+    fetch(openWeatherUrl)
         .then(function (response) {
-            // console.log(response.json());
             return response.json();
         })
-
         .then(function (weatherData) {
+            // var cityName = document.getElementById('city-btn').textContent || "";
             
-            if(searchWeatherButton) {
-              console.log(weatherData)
-            }
+            var selectedWeatherData = weatherData.list;
+            console.log(selectedWeatherData)
+           
+         
 
         });
 };
@@ -56,31 +57,26 @@ function getWeatherByCity(event) {
 function renderTodayForecast(event) {
     // event.preventDefault();
     Object.keys(localStorage).forEach((key) => {
-  
-    // var localStorageCity = JSON.parse(localStorage.getItem(key));
-    var cityButton = document.getElementById('city-btn');
-    var currentWeather = document.getElementById("current-weather");
-    var todayWeatherCity = document.createElement('h4');
-    var currentWeatherData = document.createElement('ul');
-    var currentWeatherLineItems = document.createElement('li');
-    currentWeatherLineItems.textContent = weatherData;
-    // console.log(weatherData)
-    if (key === cityButton.textContent) {
-        // console.log(cityButton)
-        todayWeatherCity.textContent = cityButton.textContent
-    }
-    currentWeather.append(todayWeatherCity);
-    currentWeather.append(currentWeatherData);
-    currentWeather.append(currentWeatherLineItems);
-    
-    return;
 
-
-    },
    
-    )
-    
-}
+        var cityButton = document.getElementById('city-btn');
+        var currentWeather = document.getElementById("current-weather");
+        var todayWeatherCity = document.createElement('h4');
+        var currentWeatherData = document.createElement('ul');
+        var currentWeatherLineItems = document.createElement('li');
+        // currentWeatherLineItems.textContent = weatherData;
+        // console.log(weatherData)
+        if (key === cityButton.textContent) {
+            todayWeatherCity.textContent = cityButton.textContent
+        }
+        currentWeather.append(todayWeatherCity);
+        currentWeather.append(currentWeatherData);
+        currentWeather.append(currentWeatherLineItems);
+
+        return;
+    },
+    );
+};
 
 
 
@@ -94,8 +90,7 @@ function clearHistory(event) {
     // localStorage.removeItem(localStorageKey);
     // event.target.previousElementSibling.remove();
     // event.target.remove();
-
-}
+};
 
 
 
