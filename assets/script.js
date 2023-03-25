@@ -11,13 +11,13 @@ let weatherData = openWeatherUrl;
 let getLocalStorage = () => {
 
     Object.keys(localStorage).forEach((key) => {
-        var todayWeatherButton = document.createElement('button');
-        todayWeatherButton.setAttribute('id', "city-btn");
-        todayWeatherButton.addEventListener("click", renderTodayForecast);
+        var cityWeatherButton = document.createElement('button');
+        cityWeatherButton.setAttribute('id', "city-btn");
+        cityWeatherButton.addEventListener("click", renderTodayForecast);
         searchWeatherButton.addEventListener('click', renderTodayForecast);
         var localStorageCity = JSON.parse(localStorage.getItem(key));
-        todayWeatherButton.textContent = localStorageCity;
-        searchHistoryEl.append(todayWeatherButton);
+        cityWeatherButton.textContent = localStorageCity;
+        searchHistoryEl.append(cityWeatherButton);
         if(localStorage === null) {
             return null;
         }

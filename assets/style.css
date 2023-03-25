@@ -18,16 +18,16 @@ h3 {
 }
 
 #search-parent {
-  
+  margin-left: 10px;
+  margin-right: 10px;
   display: inline-block;
-  width: 50%;
-  /* float: left; */
+  width: 25%
 }
 
 #forecast-parent {
 
   display: inline-block;
-  width: 50%;
+  width: 75%;
 }
 
 #clear-history-btn {
@@ -36,7 +36,7 @@ h3 {
 
 #city-history button {
   display: block;
-  margin: 2px;
+  margin-top: 2px;
 }
 
 button {
