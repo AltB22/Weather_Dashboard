@@ -18,6 +18,8 @@ h3 {
 }
 
 #search-parent {
+  background-color: rgb(242, 237, 237);
+  border-radius: 10%;
   margin-left: 10px;
   margin-right: 10px;
   display: inline-block;
@@ -25,7 +27,8 @@ h3 {
 }
 
 #forecast-parent {
-
+  background-color: rgb(242, 237, 237);
+  border-radius: 10%;
   display: inline-block;
   width: 75%;
 }

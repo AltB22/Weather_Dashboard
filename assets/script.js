@@ -4,7 +4,9 @@ var searchWeatherButton = document.getElementById("search-by-city-button");
 var clearCityHistoryButton = document.getElementById("clear-history-btn");
 let localStorageCityHistory = JSON.parse(localStorage.getItem("search")) || [];
 var searchHistoryEl = document.getElementById("city-history");
-
+var globalCityButton = document.getElementById('city-btn');
+var currentWeather = document.getElementById("current-weather");
+var todaysForecast = document.getElementById("todays-forecast");
 // var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q="
 // let weatherData = openWeatherUrl;
 
@@ -15,14 +17,14 @@ let getLocalStorage = () => {
         var cityWeatherButton = document.createElement('button');
         cityWeatherButton.setAttribute('id', "city-btn");
         cityWeatherButton.addEventListener("click", renderTodayForecast);
-        searchWeatherButton.addEventListener('click', renderTodayForecast);
+        // cityWeatherButton.addEventListener('click', getWeatherByCity);
         var localStorageCity = JSON.parse(localStorage.getItem(key));
-        cityWeatherButton.textContent = localStorageCity;
+        cityWeatherButton.textContent = localStorageCity;//Maybe eliminate this and switch to inside fetch request cityName...
         searchHistoryEl.append(cityWeatherButton);
-        if (localStorage === null) {
-            return null;
-        }
-        renderTodayForecast();
+        
+        
+        
+        // renderTodayForecast();
     }
     );
 };
@@ -33,7 +35,9 @@ function getWeatherByCity(event) {
     var searchCity = document.getElementById("searched-city-input").value;
 
     var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&appid=" + openWeatherApiKey + "&units=imperial";
-    // console.log(openWeatherUrlCity)
+   
+
+    document.getElementById("current-weather").innerHTML = "";
 
     if (!localStorage.getItem(searchCity)) {
         localStorage.setItem(searchCity, JSON.stringify(searchCity));
@@ -44,39 +48,56 @@ function getWeatherByCity(event) {
             return response.json();
         })
         .then(function (weatherData) {
-            // var cityName = document.getElementById('city-btn').textContent || "";
-            
-            var selectedWeatherData = weatherData.list;
-            console.log(selectedWeatherData)
-           
-         
+            var cityName = weatherData.name;
+            var currentTemp = weatherData.main.temp;
+            var currentWeatherSummary = weatherData.weather[0].description;
+            var selectedWeatherData = [cityName, currentTemp, currentWeatherSummary];
+            // console.log(selectedWeatherData)
 
-        });
+            renderTodayForecast(cityName, currentTemp, currentWeatherSummary)
+
+            if(globalCityButton) {
+          
+                // var todayWeatherCity = document.createElement('h4');
+                // todayWeatherCity.textContent = cityName
+                // var currentWeatherData = document.createElement('ul');
+                // var currentWeatherLineItem1 = document.createElement('li');
+                // currentWeatherLineItem1.textContent = `Temperature: ${currentTemp} deg. F`;
+                // var currentWeatherLineItem2 = document.createElement('li');
+                // currentWeatherLineItem2.textContent = `Summary: ${currentWeatherSummary}`;
+                // currentWeather.append(todaysForecast);
+                // currentWeather.append(todayWeatherCity);
+                // currentWeather.append(currentWeatherData);
+                // currentWeather.append(currentWeatherLineItem1, currentWeatherLineItem2);
+                
+                }
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
 };
 
-function renderTodayForecast(event) {
-    // event.preventDefault();
-    Object.keys(localStorage).forEach((key) => {
-
-   
-        var cityButton = document.getElementById('city-btn');
-        var currentWeather = document.getElementById("current-weather");
+function renderTodayForecast(cityName, currentTemp, currentWeatherSummary) {
         var todayWeatherCity = document.createElement('h4');
+        todayWeatherCity.textContent = cityName;
+
         var currentWeatherData = document.createElement('ul');
-        var currentWeatherLineItems = document.createElement('li');
-        // currentWeatherLineItems.textContent = weatherData;
-        // console.log(weatherData)
-        if (key === cityButton.textContent) {
-            todayWeatherCity.textContent = cityButton.textContent
-        }
+        var currentWeatherLineItem1 = document.createElement('li');
+        currentWeatherLineItem1.textContent = `Temperature: ${currentTemp} deg. F`;
+        var currentWeatherLineItem2 = document.createElement('li');
+        currentWeatherLineItem2.textContent = `Summary: ${currentWeatherSummary}`;
+        // currentWeather.append(todaysForecast);
         currentWeather.append(todayWeatherCity);
+        currentWeather.append(currentWeatherLineItem1, currentWeatherLineItem2);
         currentWeather.append(currentWeatherData);
-        currentWeather.append(currentWeatherLineItems);
+        
+        
+        
 
         return;
-    },
-    );
-};
+    }
+//     );
+// };
 
 
 
