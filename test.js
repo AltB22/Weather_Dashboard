@@ -28,3 +28,6 @@
             break;
         case "add an employee role":
             addEmployeeRole();
+    }
+    
+    var N = []
