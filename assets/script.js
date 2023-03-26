@@ -12,11 +12,14 @@ var todaysForecast = document.getElementById("todays-forecast");
 
 
 
-function renderTodayForecast(cityName, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary) {
+function renderTodayForecast(weatherDate, cityName, currentTemp, currentHumidity,  currentWindSpeed, currentWindDir, currentWeatherSummary, currentWeatherIcon) {
     currentWeather.innerHTML = "";
 
     var currentWeatherDiv = document.createElement("div");
     currentWeatherDiv.classList.add('current-weather-div')
+
+    var todayWeatherDate = document.createElement('h4')
+    todayWeatherDate.textContent = weatherDate;
 
     var todayWeatherCity = document.createElement('h4');
     todayWeatherCity.textContent = cityName;
@@ -36,9 +39,10 @@ function renderTodayForecast(cityName, currentTemp, currentHumidity, currentWind
     var currentWeatherSum = document.createElement('p');
     currentWeatherSum.textContent = `Weather Summary: ${currentWeatherSummary}`;
 
-    currentWeather.append(todayWeatherCity, currentWeatherTemp, currentWeatherHumidity, currentWeatherWindSpeed, currentWeatherWindDir, currentWeatherSum );
+    var todayWeatherIcon = document.createElement('p')
+    todayWeatherIcon.textContent = currentWeatherIcon;
 
-
+    currentWeather.append(todayWeatherCity, currentWeatherTemp, currentWeatherHumidity, currentWeatherWindSpeed, currentWeatherWindDir, currentWeatherSum, currentWeatherIcon );
     
     return;
 }
@@ -52,20 +56,21 @@ function getWeatherByCity(event) {
 
     currentWeather.innerHTML = "";
    
- 
-
     fetch(openWeatherUrl)
         .then(function (response) {
             return response.json();
         })
         .then(function (weatherData) {
+            var weatherDate = weatherData.dt;
             var cityName = weatherData.name;
             var currentTemp = weatherData.main.temp;
             var currentHumidity = weatherData.main.humidity;
             var currentWindSpeed = weatherData.wind.speed
             var currentWindDir = JSON.stringify(weatherData.wind.deg);
             var currentWeatherSummary = weatherData.weather[0].description;
+            var currentWeatherIcon = weatherData.weather.icon;
 
+            //switch / case to convert compass windDir to n, S, E, W etc.  Will finish after establish MVP.
             switch (currentWindDir) {//given
                 case "299":// if
                     currentWindDir = "West";//then
@@ -80,10 +85,8 @@ function getWeatherByCity(event) {
                     currentWindDir = "West"
             }
             //renders the searched city name and weather data
-            renderTodayForecast(cityName, currentTemp, currentHumidity,  currentWindSpeed, currentWindDir, currentWeatherSummary);
-          
-
-            // globalCityButton.textContent = cityName;
+            renderTodayForecast(weatherDate, cityName, currentTemp, currentHumidity,  currentWindSpeed, currentWindDir, currentWeatherSummary, currentWeatherIcon);
+        
             localStorage.setItem("city", JSON.stringify(cityName));
             getLocalStorage();
          
@@ -104,11 +107,21 @@ let getLocalStorage = () => {
             searchHistoryEl.append(cityWeatherButton);
         });
     
-       
     };
 
 //if city button true then renderTodayWeather using the text content of the button as the cityName being searched by API and run getWeatherByCity
+function renderCityButton(event) {
+    event.preventDefault();
+    let cityName = event.target.textContent
+    let cityBtn = document.getElementById('city-btn')
+        for(i = 0; i < localStorageCityHistory.length; i++) {
+            if(cityBtn.innerHTML === localStorageCityHistory[i]) {
+                
+                getWeatherByCity(cityName)
+            }
 
+        }
+    }
 
 
 function clearHistory(event) {
@@ -126,10 +139,5 @@ clearCityHistoryButton.addEventListener('click', function(event) {
     location.reload();
 });
 
-
-
-    
-   
-  
 getLocalStorage();
 
