@@ -4,7 +4,7 @@ var searchWeatherButton = document.getElementById("search-by-city-button");
 var clearCityHistoryButton = document.getElementById("clear-history-btn");
 let localStorageCityHistory = JSON.parse(localStorage.getItem("key")) || [];
 var searchHistoryEl = document.getElementById("city-history");
-// var globalCityButton = document.getElementById('city-btn');
+var globalCityButton = document.getElementById('city-btn');
 var currentWeather = document.getElementById("current-weather");
 var todaysForecast = document.getElementById("todays-forecast");
 // var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q="
@@ -71,7 +71,7 @@ function getWeatherByCity(event) {
             //clears the input form
 
             // globalCityButton.textContent = cityName;
-            localStorage.setItem("searchedCity", JSON.stringify(cityName));
+            localStorage.setItem("city", JSON.stringify(cityName));
             getLocalStorage();
          
         })
@@ -80,10 +80,22 @@ function getWeatherByCity(event) {
         })
 };
 
+//Maybe adjust this later to make unique key integer and use the corresponding value as the button text?
+let getLocalStorage = () => {
+    Object.keys(localStorage).forEach((key) => {
+        var cityWeatherButton = document.createElement('button');
+        cityWeatherButton.setAttribute('id', "city-btn");
+        cityWeatherButton.addEventListener("click",  renderTodayForecast)
+        var localStorageCity = JSON.parse(localStorage.getItem(key));
+            cityWeatherButton.textContent = localStorageCity;    
+            searchHistoryEl.append(cityWeatherButton);
+        });
+    
+       
+    };
 
+//if city button true then renderTodayWeather using the text content of the button as the cityName being searched by API and run getWeatherByCity
 
-
-// renderTodayForecast();
 
 
 function clearHistory(event) {
@@ -101,20 +113,10 @@ clearCityHistoryButton.addEventListener('click', function(event) {
     location.reload();
 });
 
-//Maybe adjust this later to make unique key integer and use the corresponding value as the button text?
-let getLocalStorage = () => {
-    Object.keys(localStorage).forEach((key) => {
-        var cityWeatherButton = document.createElement('button');
-        cityWeatherButton.setAttribute('id', "city-btn");
-        cityWeatherButton.addEventListener("click",  renderTodayForecast)
-        var localStorageCity = JSON.parse(localStorage.getItem(key));
-            cityWeatherButton.textContent = localStorageCity;    
-            searchHistoryEl.append(cityWeatherButton);
-        });
-        
-       
-    };
 
 
+    
+   
+  
 getLocalStorage();
 
