@@ -63,12 +63,17 @@ function getWeatherByCity(event) {
             var currentTemp = weatherData.main.temp;
             var currentHumidity = weatherData.main.humidity;
             var currentWindSpeed = weatherData.wind.speed
-            var currentWindDir = weatherData.wind.deg;
+            var currentWindDir = "180"//weatherData.wind.deg;
             var currentWeatherSummary = weatherData.weather[0].description;
-            
+
+            switch (currentWindDir) {//given
+                case "180":// if
+                 
+                    currentWindDir = "North";
+            }
             //renders the searched city name and weather data
-            renderTodayForecast(cityName, currentTemp, currentHumidity, currentWindDir, currentWindSpeed, currentWeatherSummary);
-            //clears the input form
+            renderTodayForecast(cityName, currentTemp, currentHumidity,  currentWindSpeed, currentWindDir, currentWeatherSummary);
+          
 
             // globalCityButton.textContent = cityName;
             localStorage.setItem("city", JSON.stringify(cityName));
