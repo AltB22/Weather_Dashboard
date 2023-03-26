@@ -71,8 +71,8 @@ function getWeatherByCity(event) {
             //clears the input form
 
             // globalCityButton.textContent = cityName;
-            localStorage.setItem("searchedCity", cityName);
-            getLocalStorage();//calls getLocalStorage
+            localStorage.setItem("searchedCity", JSON.stringify(cityName));
+            getLocalStorage();
          
         })
         .catch(function (error) {
