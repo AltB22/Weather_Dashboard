@@ -6,18 +6,13 @@ let localStorageCityHistory = JSON.parse(localStorage.getItem("key")) || [];
 var searchHistoryEl = document.getElementById("city-history");
 var globalCityButton = document.getElementById('city-btn');
 var currentWeather = document.getElementById("current-weather");
-var todaysForecast = document.getElementById("todays-forecast");
+// var todaysForecast = document.getElementById("todays-forecast");
 var todayWeatherIcon = document.getElementById("current-icon");
 // var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q="
 // let weatherData = openWeatherUrl;
 
-
-
 function renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity,  currentWindSpeed, currentWindDir, currentWeatherSummary) {
     currentWeather.innerHTML = "";
-
-    // var currentWeatherDiv = document.createElement("div");
-    // currentWeatherDiv.classList.add('current-weather-div')
 
     var todayWeatherDate = document.createElement('h4')
     todayWeatherDate.textContent = weatherDate;
@@ -56,6 +51,14 @@ function renderByCityButton(event) {
     getWeatherByCity(event, cityName)//passes cityName to getWeatherByCity
 
 };
+
+function renderFiveDayForecast(event) {
+    event.preventDefault();
+    var fiveDayParentEl = document.getElementById("five-day-forecast");
+    var fiveDayForecast = document.createElement('div')
+
+
+}
 
 
 //Call to API passing the searched city name and concat it into the API along with the key and conversion to imperial system format.

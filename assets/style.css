@@ -4,8 +4,11 @@ header {
   color: white;
 }
 
+
+
 .container {
   display: flex;
+  flex-wrap: wrap;
   /* flex-direction: column; */
   justify-content: space-between;
   flex-grow: 1;
@@ -22,22 +25,31 @@ h3 {
   border-radius: 7%;
   margin-left: 10px;
   margin-right: 10px;
-  display: inline-block;
-  width: 25%
+  /* display: inline-block; */
+  width: 400px;
 }
 
-#forecast-parent {
+#today-forecast-parent {
   background-color: rgb(242, 237, 237);
   border-radius: 7%;
-  display: inline-block;
-  width: 75%;
+  /* display: inline-block; */
+ flex-grow: 1;
+}
+
+#five-day-forecast-parent {
+  background-color: rgb(242, 237, 237);
+  border-radius: 7%;
+  margin: 10px;
+  flex-grow: 1;
 }
 
 #clear-history-btn {
   margin-top: 3px;
+  margin-left: 5px;
 }
 
 #city-history button {
+  margin-left: 5px;
   display: block;
   margin-top: 2px;
 }
@@ -58,4 +70,15 @@ button {
 a:visited {
   text-decoration: none;
   color: white;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  #search-parent, #today-forecast-parent, #five-day-forecast-parent {
+    width: 100%;
+    margin: 10px 0;
+  }
 }
