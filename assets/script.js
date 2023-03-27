@@ -7,22 +7,26 @@ var searchHistoryEl = document.getElementById("city-history");
 var globalCityButton = document.getElementById('city-btn');
 var currentWeather = document.getElementById("current-weather");
 var todaysForecast = document.getElementById("todays-forecast");
+var todayWeatherIcon = document.getElementById("current-icon");
 // var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q="
 // let weatherData = openWeatherUrl;
 
 
 
-function renderTodayForecast(weatherDate, cityName, currentTemp, currentHumidity,  currentWindSpeed, currentWindDir, currentWeatherSummary, currentWeatherIcon) {
+function renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity,  currentWindSpeed, currentWindDir, currentWeatherSummary) {
     currentWeather.innerHTML = "";
 
-    var currentWeatherDiv = document.createElement("div");
-    currentWeatherDiv.classList.add('current-weather-div')
+    // var currentWeatherDiv = document.createElement("div");
+    // currentWeatherDiv.classList.add('current-weather-div')
 
     var todayWeatherDate = document.createElement('h4')
     todayWeatherDate.textContent = weatherDate;
 
     var todayWeatherCity = document.createElement('h4');
     todayWeatherCity.textContent = cityName;
+
+    var todayWeatherIcon = document.createElement('div');
+    todayWeatherIcon.innerHTML = `<img src="${currentWeatherIcon}">`;
    
     var currentWeatherTemp = document.createElement('p');
     currentWeatherTemp.textContent = `Temperature: ${currentTemp} deg. F`;
@@ -39,10 +43,8 @@ function renderTodayForecast(weatherDate, cityName, currentTemp, currentHumidity
     var currentWeatherSum = document.createElement('p');
     currentWeatherSum.textContent = `Weather Summary: ${currentWeatherSummary}`;
 
-    var todayWeatherIcon = document.createElement('p')
-    todayWeatherIcon.textContent = currentWeatherIcon;
 
-    currentWeather.append(todayWeatherCity, currentWeatherTemp, currentWeatherHumidity, currentWeatherWindSpeed, currentWeatherWindDir, currentWeatherSum, currentWeatherIcon );
+    currentWeather.append(todayWeatherDate, todayWeatherCity, todayWeatherIcon, currentWeatherTemp, currentWeatherSum, currentWeatherHumidity, currentWeatherWindSpeed, currentWeatherWindDir);
     
     return;
 }
@@ -62,14 +64,17 @@ function getWeatherByCity(event) {
         })
         .then(function (weatherData) {
             var weatherDate = weatherData.dt;
+            weatherDate = dayjs.unix(weatherData.dt).format('MMM D, YYYY');
             var cityName = weatherData.name;
             var currentTemp = weatherData.main.temp;
             var currentHumidity = weatherData.main.humidity;
             var currentWindSpeed = weatherData.wind.speed
             var currentWindDir = JSON.stringify(weatherData.wind.deg);
             var currentWeatherSummary = weatherData.weather[0].description;
-            var currentWeatherIcon = weatherData.weather.icon;
-
+            var currentWeatherIcon = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
+            
+            // var currentWeatherIcon =  document.getElementById("current-icon")
+            //weatherData.weather[0].icon;
             //switch / case to convert compass windDir to n, S, E, W etc.  Will finish after establish MVP.
             switch (currentWindDir) {//given
                 case "299":// if
@@ -85,11 +90,10 @@ function getWeatherByCity(event) {
                     currentWindDir = "West"
             }
             //renders the searched city name and weather data
-            renderTodayForecast(weatherDate, cityName, currentTemp, currentHumidity,  currentWindSpeed, currentWindDir, currentWeatherSummary, currentWeatherIcon);
+            renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity,  currentWindSpeed, currentWindDir, currentWeatherSummary);
         
             localStorage.setItem("city", JSON.stringify(cityName));
             getLocalStorage();
-         
         })
         .catch(function (error) {
             console.log(error);
