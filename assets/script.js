@@ -1,17 +1,20 @@
-var searchHistoryEl = document.getElementById("city-history");
+
 var openWeatherApiKey = "eaf99af1f4ee974c35e4e4ec7368e660";
 var searchWeatherButton = document.getElementById("search-by-city-button");
 var clearCityHistoryButton = document.getElementById("clear-history-btn");
 let localStorageCityHistory = JSON.parse(localStorage.getItem("key")) || [];
-var searchHistoryEl = document.getElementById("city-history");
+var cityKeys = JSON.parse(localStorage.getItem("cityKeys")) || [];
 var globalCityButton = document.getElementById('city-btn');
 var currentWeather = document.getElementById("current-weather");
-// var todaysForecast = document.getElementById("todays-forecast");
 var todayWeatherIcon = document.getElementById("current-icon");
+var fiveDayParentEl = document.getElementById("five-day-forecast");
 // var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q="
 // let weatherData = openWeatherUrl;
+// var todaysForecast = document.getElementById("todays-forecast");
+//generates a unique keyName fo the cities searched to be used as key value pair in local storage
 
-function renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity,  currentWindSpeed, currentWindDir, currentWeatherSummary) {
+
+function renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary) {
     currentWeather.innerHTML = "";
 
     var todayWeatherDate = document.createElement('h4')
@@ -38,7 +41,6 @@ function renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentT
     var currentWeatherSum = document.createElement('p');
     currentWeatherSum.textContent = `Weather Summary: ${currentWeatherSummary}`;
 
-
     currentWeather.append(todayWeatherDate, todayWeatherCity, todayWeatherIcon, currentWeatherTemp, currentWeatherSum, currentWeatherHumidity, currentWeatherWindSpeed, currentWeatherWindDir);
     
     return;
@@ -48,30 +50,22 @@ function renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentT
 function renderByCityButton(event) {
     event.preventDefault();
     let cityName = event.target.textContent;
-    getWeatherByCity(event, cityName)//passes cityName to getWeatherByCity
+    handleCitySearch(event, cityName)//passes cityName to getWeatherByCity
 
 };
 
-function renderFiveDayForecast(event) {
-    event.preventDefault();
-    var fiveDayParentEl = document.getElementById("five-day-forecast");
-    var fiveDayForecast = document.createElement('div')
-
-
-}
-
-
 //Call to API passing the searched city name and concat it into the API along with the key and conversion to imperial system format.
-function getWeatherByCity(event, cityName) {
+function handleCitySearch(event, cityName) {
     event.preventDefault();
     var searchCity = document.getElementById("searched-city-input").value;
 
-    if(!localStorageCityHistory===null){
+    if(localStorageCityHistory ==!null ){
         var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + openWeatherApiKey + "&units=imperial";
 
     } else {
     var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&appid=" + openWeatherApiKey + "&units=imperial";
     }
+
     currentWeather.innerHTML = "";
    
     fetch(openWeatherUrl)
@@ -89,8 +83,6 @@ function getWeatherByCity(event, cityName) {
             var currentWeatherSummary = weatherData.weather[0].description;
             var currentWeatherIcon = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
             
-            // var currentWeatherIcon =  document.getElementById("current-icon")
-            //weatherData.weather[0].icon;
             //switch / case to convert compass windDir to n, S, E, W etc.  Will finish after establish MVP.
             switch (currentWindDir) {//given
                 case "299":// if
@@ -107,29 +99,42 @@ function getWeatherByCity(event, cityName) {
             }
             //renders the searched city name and weather data
             renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary);
-        
-            localStorage.setItem("city", JSON.stringify(cityName));
-            getLocalStorage();
-        })
-        .catch(function (error) {
-            console.log(error);
-        })
-};
+
+   
+      var keyName = "city-" + cityKeys.length;
+    //   localStorage.setItem(keyName, JSON.stringify(cityName));
+      cityKeys.push(keyName);
+      localStorage.setItem(keyName, JSON.stringify(cityName));
+
+      renderLocalStorage();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
 
 //Maybe adjust this later to make unique key integer and use the corresponding value as the button text?
-let getLocalStorage = () => {
-    Object.keys(localStorage).forEach((key) => {
-        var cityWeatherButton = document.createElement('button');
-        cityWeatherButton.setAttribute('id', "city-btn");
-        cityWeatherButton.addEventListener("click", renderByCityButton)
-        var localStorageCity = JSON.parse(localStorage.getItem(key));
-            cityWeatherButton.textContent = localStorageCity;    
-            searchHistoryEl.append(cityWeatherButton);
-        });
-    
-    };
+
+function renderLocalStorage() {
+    var searchHistoryEl = document.getElementById("city-history");
+        
+    for (let i = 0; i < localStorage.length; i++) {
+        
+    // var cityKeys = JSON.parse(localStorage.getItem(cityName)) || [];
+      var cityName = localStorage.key(i);
+      var localStorageCity = JSON.parse(localStorage.getItem(cityName));
+      var cityWeatherButton = document.createElement("button");
+      cityWeatherButton.setAttribute("class", "city-btn");
+      cityWeatherButton.setAttribute("id", `city-btn-${i}`);
+      cityWeatherButton.textContent = localStorageCity;
+      cityWeatherButton.addEventListener("click", renderByCityButton);
+  
+      searchHistoryEl.appendChild(cityWeatherButton);
+    }
+  }
 
 
+  
 function clearHistory(event) {
     event.preventDefault();
     localStorage.clear();
@@ -138,12 +143,24 @@ function clearHistory(event) {
 
 
 //Event listener for city search Button that also refreshes browser
-searchWeatherButton.addEventListener('click', getWeatherByCity);
+searchWeatherButton.addEventListener('click', handleCitySearch);
+// searchWeatherButton.addEventListener('click', renderLocalStorage)
 // globalCityButton.addEventListener('click', renderByCityButton);
 clearCityHistoryButton.addEventListener('click', function(event) {
     clearHistory(event)
     location.reload();
 });
 
-getLocalStorage();
+// renderLocalStorage();
 
+// let getLocalStorage = () => {
+//     Object.keys(localStorage).forEach((key) => {
+//         var cityWeatherButton = document.createElement('button');
+//         cityWeatherButton.setAttribute('class', "city-btn");
+//         cityWeatherButton.setAttribute("id",`${i}`);
+//         cityWeatherButton.addEventListener("click", renderByCityButton)
+//         var localStorageCity = JSON.parse(localStorage.getItem(key));
+//             cityWeatherButton.textContent = localStorageCity;    
+//             searchHistoryEl.append(cityWeatherButton);
+//         });
+//     };

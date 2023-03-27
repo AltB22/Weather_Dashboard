@@ -4,7 +4,6 @@ header {
   color: white;
 }
 
-
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -21,9 +20,7 @@ h3 {
 }
 
 #lower-row {
-  /* display: block; */
   display: inline-block;
-  
 }
 
 #search-parent {
@@ -54,6 +51,7 @@ h3 {
 #five-day-forecast-parent h3 {
   width: 100%
 }
+
 #clear-history-btn {
   margin-top: 3px;
   margin-left: 5px;
@@ -76,8 +74,8 @@ button {
   text-align: center;
   background-color: rgb(6, 123, 106);
   color: white;
- 
 }
+
 a:visited {
   text-decoration: none;
   color: white;
