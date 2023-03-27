@@ -5,13 +5,9 @@ header {
 }
 
 
-
 .container {
   display: flex;
   flex-wrap: wrap;
-  /* flex-direction: column; */
-  justify-content: space-between;
-  flex-grow: 1;
 }
 
 h3 {
@@ -20,29 +16,44 @@ h3 {
   color: white;
 }
 
+#upper-row {
+  display: inline-block;
+}
+
+#lower-row {
+  /* display: block; */
+  display: inline-block;
+  
+}
+
 #search-parent {
   background-color: rgb(242, 237, 237);
   border-radius: 7%;
   margin-left: 10px;
   margin-right: 10px;
-  /* display: inline-block; */
+  display: inline-block;
+  /* width: 25%; */
   width: 400px;
 }
 
 #today-forecast-parent {
+  display: inline-block;
+  flex-grow: 1;
   background-color: rgb(242, 237, 237);
   border-radius: 7%;
-  /* display: inline-block; */
- flex-grow: 1;
+  margin-left: 10px;
 }
 
 #five-day-forecast-parent {
+  flex-grow: 1;
+  margin-top: 10px;
   background-color: rgb(242, 237, 237);
   border-radius: 7%;
-  margin: 10px;
-  flex-grow: 1;
 }
 
+#five-day-forecast-parent h3 {
+  width: 100%
+}
 #clear-history-btn {
   margin-top: 3px;
   margin-left: 5px;
@@ -75,6 +86,7 @@ a:visited {
 @media screen and (max-width: 768px) {
   .container {
     flex-direction: column;
+    align-items: center;
   }
   
   #search-parent, #today-forecast-parent, #five-day-forecast-parent {
