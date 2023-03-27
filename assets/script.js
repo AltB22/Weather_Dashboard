@@ -49,13 +49,26 @@ function renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentT
     return;
 }
 
+//if city button true then renderTodayWeather using the text content of the button as the cityName being searched by API and run getWeatherByCity
+function renderByCityButton(event) {
+    event.preventDefault();
+    let cityName = event.target.textContent;
+    getWeatherByCity(event, cityName)//passes cityName to getWeatherByCity
+
+};
+
+
 //Call to API passing the searched city name and concat it into the API along with the key and conversion to imperial system format.
-function getWeatherByCity(event) {
+function getWeatherByCity(event, cityName) {
     event.preventDefault();
     var searchCity = document.getElementById("searched-city-input").value;
 
-    var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&appid=" + openWeatherApiKey + "&units=imperial";
+    if(!localStorageCityHistory===null){
+        var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + openWeatherApiKey + "&units=imperial";
 
+    } else {
+    var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchCity + "&appid=" + openWeatherApiKey + "&units=imperial";
+    }
     currentWeather.innerHTML = "";
    
     fetch(openWeatherUrl)
@@ -90,7 +103,7 @@ function getWeatherByCity(event) {
                     currentWindDir = "West"
             }
             //renders the searched city name and weather data
-            renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity,  currentWindSpeed, currentWindDir, currentWeatherSummary);
+            renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary);
         
             localStorage.setItem("city", JSON.stringify(cityName));
             getLocalStorage();
@@ -105,27 +118,13 @@ let getLocalStorage = () => {
     Object.keys(localStorage).forEach((key) => {
         var cityWeatherButton = document.createElement('button');
         cityWeatherButton.setAttribute('id', "city-btn");
-        cityWeatherButton.addEventListener("click",  renderTodayForecast)
+        cityWeatherButton.addEventListener("click", renderByCityButton)
         var localStorageCity = JSON.parse(localStorage.getItem(key));
             cityWeatherButton.textContent = localStorageCity;    
             searchHistoryEl.append(cityWeatherButton);
         });
     
     };
-
-//if city button true then renderTodayWeather using the text content of the button as the cityName being searched by API and run getWeatherByCity
-function renderCityButton(event) {
-    event.preventDefault();
-    let cityName = event.target.textContent
-    let cityBtn = document.getElementById('city-btn')
-        for(i = 0; i < localStorageCityHistory.length; i++) {
-            if(cityBtn.innerHTML === localStorageCityHistory[i]) {
-                
-                getWeatherByCity(cityName)
-            }
-
-        }
-    }
 
 
 function clearHistory(event) {
@@ -137,7 +136,7 @@ function clearHistory(event) {
 
 //Event listener for city search Button that also refreshes browser
 searchWeatherButton.addEventListener('click', getWeatherByCity);
-
+// globalCityButton.addEventListener('click', renderByCityButton);
 clearCityHistoryButton.addEventListener('click', function(event) {
     clearHistory(event)
     location.reload();
