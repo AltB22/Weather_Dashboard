@@ -55,7 +55,7 @@ function handleSearchButton(event) {
     } else {
         prompt("City search field required");
     }
-};
+}
 
 //Call to API passing the searched city name and concat it into the API along with the key and conversion to imperial system format.
 function getWeatherByCity(cityName) {
@@ -118,12 +118,9 @@ function renderForecast(weatherDate, currentCitySearch, currentWeatherIcon, curr
     var currentWeatherWindSpeed = document.createElement('p');
     currentWeatherWindSpeed.textContent = `Wind Speed: ${currentWindSpeed} mph`;
 
-   
     var currentWeatherWindDir = document.createElement('p');
     // currentWeatherWindDir.textContent = `Wind Dir: ${currentWindDir}`;
     currentWeatherWindDir.textContent = `Wind Dir: ${getCardinalDirection(currentWindDir)}`;
-
-
 
     var currentWeatherSum = document.createElement('p');
     currentWeatherSum.textContent = `Weather Summary: ${currentWeatherSummary}`;
@@ -150,11 +147,24 @@ function createCityButtons() {
 
         var cityWeatherButton = document.createElement("button");
         cityWeatherButton.textContent = cityName;
-        cityWeatherButton.addEventListener("click", renderForecast);
+        cityWeatherButton.setAttribute('id', 'city-btn');
+        cityWeatherButton.addEventListener("click", function(event) {
+            var cityName = event.target.textContent;
+            getWeatherByCity(cityName);
+        })
 
         searchHistoryEl.append(cityWeatherButton);
     }
+
+    // var cityBtn = document.querySelectorAll("#city-btn");
+    // cityBtn.forEach((btn) => {
+    //     var cityName = btn.textContent
+    //     btn.addEventListener('click', getWeatherByCity(cityName));
+    // })
 }
+
+
+
 
 function clearHistory(event) {
     event.preventDefault();
