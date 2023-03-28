@@ -42,11 +42,11 @@ h3 {
   margin-left: 10px;
 }
 
-#five-day-forecast {
+#five-day-forecast-parent {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-evenly;
+  /* align-items: center; */
   margin-top: 10px;
   background-color: rgb(242, 237, 237);
   border-radius: 7%;
@@ -58,7 +58,6 @@ h3 {
 
 .forecast-day {
   display: flex;
-  width: 20%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
