@@ -42,7 +42,7 @@ h3 {
   margin-left: 10px;
 }
 
-#five-day-forecast-parent {
+#five-day-forecast{
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
@@ -52,7 +52,7 @@ h3 {
   border-radius: 7%;
 }
 
-#five-day-forecast-parent h3 {
+#five-day-forecast h3 {
   width: 100%
 }
 
