@@ -4,8 +4,8 @@ var openWeatherApiKey = "eaf99af1f4ee974c35e4e4ec7368e660";
 var searchWeatherButton = document.getElementById("search-by-city-button");
 var clearCityHistoryButton = document.getElementById("clear-history-btn");
 let localStorageCityHistory = [];//establishes empty array to house cities in local storage
-var cityKeys = JSON.parse(localStorage.getItem("cityKeys")) || [];
-var keyName = "city-" + cityKeys.length;
+
+
 var lastSearchedCity = '';//establishes the most recent search for separate storage in local to persist the weather data on the page
 var currentWeather = document.getElementById("current-weather");
 var todayWeatherIcon = document.getElementById("current-icon");
@@ -23,7 +23,6 @@ function handleSearchButton(event) {
 
     if(cityName) {
         getWeatherByCity(cityName)//passes cityName to getWeatherByCity
-
         // cityName.value = "";
     } else {
        prompt("City search field required");
@@ -51,22 +50,30 @@ function getWeatherByCity(data) {
             var currentWindSpeed = weatherData.wind.speed
             var currentWindDir = JSON.stringify(weatherData.wind.deg);
             var currentWeatherSummary = weatherData.weather[0].description;
+
+            saveToLocalStorage(cityName);
+
+        })
+    }
+
+function saveToLocalStorage (cityName){
+            if(!localStorageCityHistory.includes(cityName)) {
+                localStorageCityHistory.push(cityName);
+            }
+            localStorage.setItem("searchedCities", JSON.stringify(localStorageCityHistory));
+
+            // var cityKeys = JSON.parse(localStorage.getItem("keyName"));
+            // var keyName = "city_" + cityKeys.length;
+        
+            // console.log(cityKeys, cityName)
             
-            
-            
-            
-            localStorage.setItem(keyName, JSON.stringify(cityName));
-            localStorageCityHistory.push(cityName)
-           
-            console.log(keyName, cityName)
-            
-            renderForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary);
+            // renderForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary);
 
      
 
     //   renderLocalStorage();
-    })
-}
+    }
+
 
 function renderForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary) {
     currentWeather.innerHTML = "";
