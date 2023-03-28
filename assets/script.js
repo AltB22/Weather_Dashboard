@@ -165,7 +165,7 @@ function renderFiveDayForecast (fiveDayForecastData) {
         humidityEl.textContent = "Humidity: " + forecastHumidity + "%";
         forecastEl.append(humidityEl);
 
-        fiveDayParentEl.appendChild(forecastEl);
+        fiveDayParentEl.append(forecastEl);
     }
 }
 
@@ -207,5 +207,5 @@ clearCityHistoryButton.addEventListener('click', function (event) {
     location.reload();
 })
 
-getWeatherByCity("San Rafael")
+getWeatherByCity("Virginia Beach")
 
