@@ -1,5 +1,5 @@
 //Some notes and psuedo-code about what I'm trying to do to finish this app:
-//Redirected the flow of data slightly to isolate the search button functionality to establish city name rather than have it be var in the api fetch function.  Will pass cityName as data to API function and have it be pushed to local storage array.  Will use separately the lastSearchedCity to persist the page data.  
+//Redirected the flow of data slightly to isolate the search button functionality to establish city name rather than have it be var in the api fetch function.  Will pass cityName as data to API function and have it be pushed to local storage array.  
 
 // import { getCardinalDirection } from "./compass";// imports getCardinalDirection from compass.js file
 var openWeatherApiKey = "eaf99af1f4ee974c35e4e4ec7368e660";
@@ -11,37 +11,37 @@ var currentWeather = document.getElementById("current-weather");
 var todayWeatherIcon = document.getElementById("current-icon");
 var fiveDayParentEl = document.getElementById("five-day-forecast");
 
+//Below function defines ranges for numerical points of the compass into range arrays and is called in renderForecast function to convert wind direction from numerical degress of compass to cardinal directions..I realize this is outside the scope of the acceptance criteria but I couldn't resist AND I intend to utilize a similar approach to convert swell and wind directions from an ocean data API in our upcoming project 3 so wanted to figure it out ahead of time ;)
+
 function getCardinalDirection(degrees) {
-    const degreeRanges = [ 
-      { direction: "N", range: [0, 11.25] },
-      { direction: "NNE", range: [11.25, 33.75] },
-      { direction: "NE", range: [33.75, 56.25] },
-      { direction: "ENE", range: [56.25, 78.75] },
-      { direction: "E", range: [78.75, 101.25] },
-      { direction: "ESE", range: [101.25, 123.75] },
-      { direction: "SE", range: [123.75, 146.25] },
-      { direction: "SSE", range: [146.25, 168.75] },
-      { direction: "S", range: [168.75, 191.25] },
-      { direction: "SSW", range: [191.25, 213.75] },
-      { direction: "SW", range: [213.75, 236.25] },
-      { direction: "WSW", range: [236.25, 258.75] },
-      { direction: "W", range: [258.75, 281.25] },
-      { direction: "WNW", range: [281.25, 303.75] },
-      { direction: "NW", range: [303.75, 326.25] },
-      { direction: "NNW", range: [326.25, 348.75] },
-      { direction: "N", range: [348.75, 360] },
+    const degreeRanges = [
+        { direction: "N", range: [0, 11.25] },
+        { direction: "NNE", range: [11.25, 33.75] },
+        { direction: "NE", range: [33.75, 56.25] },
+        { direction: "ENE", range: [56.25, 78.75] },
+        { direction: "E", range: [78.75, 101.25] },
+        { direction: "ESE", range: [101.25, 123.75] },
+        { direction: "SE", range: [123.75, 146.25] },
+        { direction: "SSE", range: [146.25, 168.75] },
+        { direction: "S", range: [168.75, 191.25] },
+        { direction: "SSW", range: [191.25, 213.75] },
+        { direction: "SW", range: [213.75, 236.25] },
+        { direction: "WSW", range: [236.25, 258.75] },
+        { direction: "W", range: [258.75, 281.25] },
+        { direction: "WNW", range: [281.25, 303.75] },
+        { direction: "NW", range: [303.75, 326.25] },
+        { direction: "NNW", range: [326.25, 348.75] },
+        { direction: "N", range: [348.75, 360] },
     ];
-  
+
     for (let i = 0; i < degreeRanges.length; i++) {
-      if (degrees >= degreeRanges[i].range[0] && degrees < degreeRanges[i].range[1]) {
-        return degreeRanges[i].direction;
-      }
+        if (degrees >= degreeRanges[i].range[0] && degrees < degreeRanges[i].range[1]) {
+            return degreeRanges[i].direction;
+        }
     }
     return "N"; // default direction if degrees is not within any of the defined ranges
-  }
+}
 
-
-// console.log(compass)
 searchWeatherButton.addEventListener('click', handleSearchButton)
 //if cityName has value then pass value to getWeatherByCity as the cityName being searched by API and run getWeatherByCity
 function handleSearchButton(event) {
@@ -95,6 +95,8 @@ function saveToLocalStorage(weatherData) {
 }
 
 
+
+
 function renderForecast(weatherDate, currentCitySearch, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary) {
     currentWeather.innerHTML = "";
 
@@ -116,8 +118,55 @@ function renderForecast(weatherDate, currentCitySearch, currentWeatherIcon, curr
     var currentWeatherWindSpeed = document.createElement('p');
     currentWeatherWindSpeed.textContent = `Wind Speed: ${currentWindSpeed} mph`;
 
+    // switch (currentWindDir) {
+    //     case "N":
+    //         currentWindDir = "N":
+    //         break;
+    //     case "NNE":
+    //         currentWindDir = "NNE"
+    //         break;
+    //     case "NE":
+    //         currentWindDir = "NE"
+    //         break;
+    //     case "ENE":
+    //         currentWindDir = "ENE"
+    //         break;
+    //     case "E":
+    //         currentWindDir = "E"
+    //         break;
+    //     case "ESE":
+    //         currentWindDir = "ESE"
+    //         break;
+    //     case "SE":
+    //         currentWindDir = "SE"
+    //         break;
+    //     case "SSE":
+    //         currentWindDir = "SSE"
+    //         break;
+    //     case "S":
+    //         currentWindDir = "S"
+    //         break;
+    //     case "SSW":
+    //         currentWindDir = "SSW"
+    //         break;
+    //     case "WSW":
+    //         currentWindDir = "WSW"
+    //         break;
+    //     case "W":
+    //         currentWindDir = "W"
+    //         break;
+    //     case "WNW":
+    //         currentWindDir = "WNW"
+    //         break;
+    //     case "NNW":
+    //         currentWindDir = "NNW"
+    //         break;
+    // };
     var currentWeatherWindDir = document.createElement('p');
-    currentWeatherWindDir.textContent = `Wind Dir: ${currentWindDir}`;
+    // currentWeatherWindDir.textContent = `Wind Dir: ${currentWindDir}`;
+    currentWeatherWindDir.textContent = `Wind Dir: ${getCardinalDirection(currentWindDir)}`;
+
+
 
     var currentWeatherSum = document.createElement('p');
     currentWeatherSum.textContent = `Weather Summary: ${currentWeatherSummary}`;
@@ -143,8 +192,6 @@ function createCityButtons() {
         }
 
         var cityWeatherButton = document.createElement("button");
-        // cityWeatherButton.setAttribute("class", "city-btn");
-        // cityWeatherButton.setAttribute("id", `city-btn-${i}`);
         cityWeatherButton.textContent = cityName;
         cityWeatherButton.addEventListener("click", renderForecast);
 
