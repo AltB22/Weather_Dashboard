@@ -31,6 +31,51 @@
 
 // //Deprecated approach below.  The above defined ranges is more compatible with the swich / case I want to implement to handle wind direction.  Note...did not use switch case after all as it's much easier just to call the function and pass the numerical wind dir.
 
+ // switch (currentWindDir) {
+    //     case "N":
+    //         currentWindDir = "N":
+    //         break;
+    //     case "NNE":
+    //         currentWindDir = "NNE"
+    //         break;
+    //     case "NE":
+    //         currentWindDir = "NE"
+    //         break;
+    //     case "ENE":
+    //         currentWindDir = "ENE"
+    //         break;
+    //     case "E":
+    //         currentWindDir = "E"
+    //         break;
+    //     case "ESE":
+    //         currentWindDir = "ESE"
+    //         break;
+    //     case "SE":
+    //         currentWindDir = "SE"
+    //         break;
+    //     case "SSE":
+    //         currentWindDir = "SSE"
+    //         break;
+    //     case "S":
+    //         currentWindDir = "S"
+    //         break;
+    //     case "SSW":
+    //         currentWindDir = "SSW"
+    //         break;
+    //     case "WSW":
+    //         currentWindDir = "WSW"
+    //         break;
+    //     case "W":
+    //         currentWindDir = "W"
+    //         break;
+    //     case "WNW":
+    //         currentWindDir = "WNW"
+    //         break;
+    //     case "NNW":
+    //         currentWindDir = "NNW"
+    //         break;
+    // };
+
 // // const compassDeg = [...new Array(360).keys()]
 // // const compassDirectionsArr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
   

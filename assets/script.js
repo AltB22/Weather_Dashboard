@@ -83,9 +83,9 @@ function saveToLocalStorage(weatherData) {
     var weatherDate = weatherData.dt;
     weatherDate = dayjs.unix(weatherData.dt).format('MMM D, YYYY');
     var currentWeatherIcon = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
-    var currentTemp = weatherData.main.temp;
-    var currentHumidity = weatherData.main.humidity;
-    var currentWindSpeed = weatherData.wind.speed
+    var currentTemp = Math.ceil(weatherData.main.temp);
+    var currentHumidity = Math.ceil(weatherData.main.humidity);
+    var currentWindSpeed = Math.ceil(weatherData.wind.speed);
     var currentWindDir = JSON.stringify(weatherData.wind.deg);
     var currentWeatherSummary = weatherData.weather[0].description;
 
@@ -118,50 +118,7 @@ function renderForecast(weatherDate, currentCitySearch, currentWeatherIcon, curr
     var currentWeatherWindSpeed = document.createElement('p');
     currentWeatherWindSpeed.textContent = `Wind Speed: ${currentWindSpeed} mph`;
 
-    // switch (currentWindDir) {
-    //     case "N":
-    //         currentWindDir = "N":
-    //         break;
-    //     case "NNE":
-    //         currentWindDir = "NNE"
-    //         break;
-    //     case "NE":
-    //         currentWindDir = "NE"
-    //         break;
-    //     case "ENE":
-    //         currentWindDir = "ENE"
-    //         break;
-    //     case "E":
-    //         currentWindDir = "E"
-    //         break;
-    //     case "ESE":
-    //         currentWindDir = "ESE"
-    //         break;
-    //     case "SE":
-    //         currentWindDir = "SE"
-    //         break;
-    //     case "SSE":
-    //         currentWindDir = "SSE"
-    //         break;
-    //     case "S":
-    //         currentWindDir = "S"
-    //         break;
-    //     case "SSW":
-    //         currentWindDir = "SSW"
-    //         break;
-    //     case "WSW":
-    //         currentWindDir = "WSW"
-    //         break;
-    //     case "W":
-    //         currentWindDir = "W"
-    //         break;
-    //     case "WNW":
-    //         currentWindDir = "WNW"
-    //         break;
-    //     case "NNW":
-    //         currentWindDir = "NNW"
-    //         break;
-    // };
+   
     var currentWeatherWindDir = document.createElement('p');
     // currentWeatherWindDir.textContent = `Wind Dir: ${currentWindDir}`;
     currentWeatherWindDir.textContent = `Wind Dir: ${getCardinalDirection(currentWindDir)}`;
