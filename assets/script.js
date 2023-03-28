@@ -145,25 +145,25 @@ function renderFiveDayForecast (fiveDayForecastData) {
         var forecastEl = document.createElement("div");
         forecastEl.classList.add("forecast-day");
 
-        var dateEl = document.createElement("p");
-        dateEl.classList.add("forecast-date");
-        dateEl.textContent = forecastDate;
-        forecastEl.append(dateEl);
+        var forecastDateEl = document.createElement("p");
+        forecastDateEl.classList.add("forecast-date");
+        forecastDateEl.textContent = forecastDate;
+        forecastEl.append(forecastDateEl);
 
-        var iconEl = document.createElement("img");
-        iconEl.classList.add("forecast-icon");
-        iconEl.setAttribute("src", forecastIcon);
-        forecastEl.append(iconEl);
+        var forecastIconEl = document.createElement("img");
+        forecastIconEl.classList.add("forecast-icon");
+        forecastIconEl.setAttribute("src", forecastIcon);
+        forecastEl.append(forecastIconEl);
 
-        var tempEl = document.createElement("p");
-        tempEl.classList.add("forecast-temp");
-        tempEl.textContent = "Temp: " + forecastTemp + " °F";
-        forecastEl.append(tempEl);
+        var forecastTempEl = document.createElement("p");
+        forecastTempEl.classList.add("forecast-temp");
+        forecastTempEl.textContent = "Temp: " + forecastTemp + " °F";
+        forecastEl.append(forecastTempEl);
 
-        var humidityEl = document.createElement("p");
-        humidityEl.classList.add("forecast-humidity");
-        humidityEl.textContent = "Humidity: " + forecastHumidity + "%";
-        forecastEl.append(humidityEl);
+        var forecastHumidityEl = document.createElement("p");
+        forecastHumidityEl.classList.add("forecast-humidity");
+        forecastHumidityEl.textContent = "Humidity: " + forecastHumidity + "%";
+        forecastEl.append(forecastHumidityEl);
 
         fiveDayParentEl.append(forecastEl);
     }
