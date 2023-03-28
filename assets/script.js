@@ -1,7 +1,7 @@
 //Some notes and psuedo-code about what I'm trying to do to finish this app:
 //Redirected the flow of data slightly to isolate the search button functionality to establish city name rather than have it be var in the api fetch function.  Will pass cityName as data to API function and have it be pushed to local storage array.  
 
-// import { getCardinalDirection } from "./compass";// imports getCardinalDirection from compass.js file
+// import { getCardinalDirection } from "./compass";// imports getCardinalDirection from compass.js file ****Deprecated the import and simply moved function into script.js.
 var openWeatherApiKey = "eaf99af1f4ee974c35e4e4ec7368e660";
 var searchWeatherButton = document.getElementById("search-by-city-button");
 var clearCityHistoryButton = document.getElementById("clear-history-btn");
@@ -67,9 +67,15 @@ function getWeatherByCity(cityName) {
             return response.json();
         })
         .then(function (weatherData) {
-
             saveToLocalStorage(weatherData);
-
+            var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + openWeatherApiKey + "&units=imperial";
+            fetch(forecastUrl)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (fiveDayForecastData) {
+                    renderFiveDayForecast(fiveDayForecastData);
+                });
         })
 }
 
@@ -91,11 +97,7 @@ function saveToLocalStorage(weatherData) {
 
     createCityButtons();
     renderForecast(weatherDate, currentCitySearch, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary);
-
 }
-
-
-
 
 function renderForecast(weatherDate, currentCitySearch, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary) {
     currentWeather.innerHTML = "";
@@ -130,6 +132,42 @@ function renderForecast(weatherDate, currentCitySearch, currentWeatherIcon, curr
     return;
 }
 
+function renderFiveDayForecast (fiveDayForecastData) {
+    fiveDayParentEl.innerHTML = "";
+
+    for (var i = 0; i < fiveDayForecastData.list.length; i += 8) {
+        var forecastDate = dayjs.unix(fiveDayForecastData.list[i].dt).format('MMM D, YYYY');
+        var forecastIcon = `https://openweathermap.org/img/wn/${fiveDayForecastData.list[i].weather[0].icon}.png`;
+        var forecastTemp = Math.ceil(fiveDayForecastData.list[i].main.temp);
+        var forecastHumidity = Math.ceil(fiveDayForecastData.list[i].main.humidity);
+
+        // Creates a new div to hold each day's forecast information then creates a series of element's corresponding to the fiveDayForecastData being received.  classList seems to be good solution for this as there will be 5 forecastEl divs all with the same properties.
+        var forecastEl = document.createElement("div");
+        forecastEl.classList.add("forecast-day");
+
+        var dateEl = document.createElement("p");
+        dateEl.classList.add("forecast-date");
+        dateEl.textContent = forecastDate;
+        forecastEl.append(dateEl);
+
+        var iconEl = document.createElement("img");
+        iconEl.classList.add("forecast-icon");
+        iconEl.setAttribute("src", forecastIcon);
+        forecastEl.append(iconEl);
+
+        var tempEl = document.createElement("p");
+        tempEl.classList.add("forecast-temp");
+        tempEl.textContent = "Temp: " + forecastTemp + " °F";
+        forecastEl.append(tempEl);
+
+        var humidityEl = document.createElement("p");
+        humidityEl.classList.add("forecast-humidity");
+        humidityEl.textContent = "Humidity: " + forecastHumidity + "%";
+        forecastEl.append(humidityEl);
+
+        fiveDayParentEl.appendChild(forecastEl);
+    }
+}
 
 function createCityButtons() {
     var searchHistoryEl = document.getElementById("city-history");
@@ -155,16 +193,7 @@ function createCityButtons() {
 
         searchHistoryEl.append(cityWeatherButton);
     }
-
-    // var cityBtn = document.querySelectorAll("#city-btn");
-    // cityBtn.forEach((btn) => {
-    //     var cityName = btn.textContent
-    //     btn.addEventListener('click', getWeatherByCity(cityName));
-    // })
 }
-
-
-
 
 function clearHistory(event) {
     event.preventDefault();
@@ -177,4 +206,6 @@ clearCityHistoryButton.addEventListener('click', function (event) {
     clearHistory(event)
     location.reload();
 })
+
+getWeatherByCity("San Rafael")
 

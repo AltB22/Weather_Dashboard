@@ -7,6 +7,7 @@ header {
 .container {
   display: flex;
   flex-wrap: wrap;
+  /* flex-direction: row; */
 }
 
 h3 {
@@ -41,8 +42,11 @@ h3 {
   margin-left: 10px;
 }
 
-#five-day-forecast-parent {
-  flex-grow: 1;
+#five-day-forecast {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 10px;
   background-color: rgb(242, 237, 237);
   border-radius: 7%;
@@ -50,6 +54,19 @@ h3 {
 
 #five-day-forecast-parent h3 {
   width: 100%
+}
+
+.forecast-day {
+  display: flex;
+  width: 20%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.forecast-day p {
+  margin: 5px;
 }
 
 #clear-history-btn {
