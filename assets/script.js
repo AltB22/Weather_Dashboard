@@ -3,7 +3,7 @@
 var openWeatherApiKey = "eaf99af1f4ee974c35e4e4ec7368e660";
 var searchWeatherButton = document.getElementById("search-by-city-button");
 var clearCityHistoryButton = document.getElementById("clear-history-btn");
-let localStorageCityHistory = [];//establishes empty array to house cities in local storage
+let cityHistoryArr = [];//establishes empty array to house cities in local storage
 var currentCitySearch = "";//establishes the most recent search for separate storage in local to persist the weather data on the page
 var currentWeather = document.getElementById("current-weather");
 // currentWeather.innerHTML = "";
@@ -45,41 +45,39 @@ function getWeatherByCity(cityName) {
     }
 
 function saveToLocalStorage (weatherData){
-            if(!localStorageCityHistory.includes(weatherData.name)) {
-                localStorageCityHistory.push(weatherData.name);
+            if(!cityHistoryArr.includes(weatherData.name)) {
+                cityHistoryArr.push(weatherData.name);
             }
-            localStorage.setItem("searchedCities", JSON.stringify(localStorageCityHistory));
-
-            // var weatherDate = weatherData.dt;
-            // weatherDate = dayjs.unix(weatherData.dt).format('MMM D, YYYY');
-            // weatherData.name 
-            // var currentWeatherIcon = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
-            // var currentTemp = weatherData.main.temp;
-            // var currentHumidity = weatherData.main.humidity;
-            // var currentWindSpeed = weatherData.wind.speed
-            // var currentWindDir = JSON.stringify(weatherData.wind.deg);
-            // var currentWeatherSummary = weatherData.weather[0].description;
+            localStorage.setItem("searchedCities", JSON.stringify(cityHistoryArr));
+            
+            currentCitySearch = weatherData.name; 
+            var weatherDate = weatherData.dt;
+            weatherDate = dayjs.unix(weatherData.dt).format('MMM D, YYYY');
+            var currentWeatherIcon = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
+            var currentTemp = weatherData.main.temp;
+            var currentHumidity = weatherData.main.humidity;
+            var currentWindSpeed = weatherData.wind.speed
+            var currentWindDir = JSON.stringify(weatherData.wind.deg);
+            var currentWeatherSummary = weatherData.weather[0].description;
             // var cityKeys = JSON.parse(localStorage.getItem("keyName"));
             // var keyName = "city_" + cityKeys.length;
         
-            // console.log(cityKeys, cityName)
-            
-            // renderForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary);
-
-     
+           
+            createCityButtons();
+            renderForecast(weatherDate, currentCitySearch, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary);
 
     //   renderLocalStorage();
     }
 
 
-function renderForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary) {
-    currentWeather.innerHTML = "";
+function renderForecast(weatherDate, currentCitySearch, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary) {
+    // currentWeather.innerHTML = "";
 
     var todayWeatherDate = document.createElement('h4')
     todayWeatherDate.textContent = weatherDate;
 
     var todayWeatherCity = document.createElement('h4');
-    todayWeatherCity.textContent = cityName;
+    todayWeatherCity.textContent = currentCitySearch;
 
     var todayWeatherIcon = document.createElement('div');
     todayWeatherIcon.innerHTML = `<img src="${currentWeatherIcon}">`;
@@ -105,22 +103,27 @@ function renderForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, 
 }
 
 
-
-function renderLocalStorage() {
+function createCityButtons() {
     var searchHistoryEl = document.getElementById("city-history");
-        
-    for (let i = 0; i < localStorage.length; i++) {
-        
-    // var cityKeys = JSON.parse(localStorage.getItem(cityName)) || [];
-      var cityName = localStorage.key(i);
-      var localStorageCity = JSON.parse(localStorage.getItem(cityName));
-      var cityWeatherButton = document.createElement("button");
-      cityWeatherButton.setAttribute("class", "city-btn");
-      cityWeatherButton.setAttribute("id", `city-btn-${i}`);
-      cityWeatherButton.textContent = localStorageCity;
-      cityWeatherButton.addEventListener("click", renderByCityButton);
+    var cityHistory = JSON.parse(localStorage.getItem("searchedCities"));
+    var cityBtns = [];
+
+    searchHistoryEl.innerHTML = "";
+
+    for (let i = 0; i < cityHistory.length; i++) {
+        var cityName = cityHistory[i];
+
+        if(!cityBtns.includes(cityName)) {
+            cityBtns.push(cityName);
+        }
+
+        var cityWeatherButton = document.createElement("button");
+        cityWeatherButton.setAttribute("class", "city-btn");
+        cityWeatherButton.setAttribute("id", `city-btn-${i}`);
+        cityWeatherButton.textContent = cityName;
+        cityWeatherButton.addEventListener("click", renderForecast);
   
-      searchHistoryEl.appendChild(cityWeatherButton);
+      searchHistoryEl.append(cityWeatherButton);
     }
   }
 
