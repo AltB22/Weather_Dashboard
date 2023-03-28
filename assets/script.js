@@ -1,21 +1,74 @@
 //Some notes and psuedo-code about what I'm trying to do to finish this app:
-//Prefer to make 1 API call that uses only the first index position [0] to get the current weather and then uses all 5 index positions to get the 5 day forecast.  Would need to split off index[0] and then get all for the 5 day. Then render in respective elements.
-
+//Redirected the flow of data slightly to isolate the search button functionality to establish city name rather than have it be var in the api fetch function.  Will pass cityName as data to API function and have it be pushed to local storage array.  Will use separately the lastSearchedCity to persist the page data.  
 var openWeatherApiKey = "eaf99af1f4ee974c35e4e4ec7368e660";
 var searchWeatherButton = document.getElementById("search-by-city-button");
 var clearCityHistoryButton = document.getElementById("clear-history-btn");
-let localStorageCityHistory = [];
-var lastSearchedCity = '';
-// var cityKeys = JSON.parse(localStorage.getItem("cityKeys")) || [];
-// var globalCityButton = document.getElementById('city-btn');
+let localStorageCityHistory = [];//establishes empty array to house cities in local storage
+var cityKeys = JSON.parse(localStorage.getItem("cityKeys")) || [];
+var keyName = "city-" + cityKeys.length;
+var lastSearchedCity = '';//establishes the most recent search for separate storage in local to persist the weather data on the page
 var currentWeather = document.getElementById("current-weather");
 var todayWeatherIcon = document.getElementById("current-icon");
 var fiveDayParentEl = document.getElementById("five-day-forecast");
 const compass = [...new Array(360).keys()]
-console.log(compass)
 
 
-function renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary) {
+// console.log(compass)
+searchWeatherButton.addEventListener('click', handleSearchButton)
+//if cityName has value then pass value to getWeatherByCity as the cityName being searched by API and run getWeatherByCity
+function handleSearchButton(event) {
+    event.preventDefault();
+    
+    let cityName = document.getElementById("searched-city-input").value;
+
+    if(cityName) {
+        getWeatherByCity(cityName)//passes cityName to getWeatherByCity
+
+        // cityName.value = "";
+    } else {
+       prompt("City search field required");
+    }
+};
+
+//Call to API passing the searched city name and concat it into the API along with the key and conversion to imperial system format.
+function getWeatherByCity(data) {
+    var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + data + "&appid=" + openWeatherApiKey + "&units=imperial";
+
+    // currentWeather.innerHTML = "";
+   
+    fetch(openWeatherUrl)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (weatherData) {
+            
+            var weatherDate = weatherData.dt;
+            weatherDate = dayjs.unix(weatherData.dt).format('MMM D, YYYY');
+            var cityName = weatherData.name;
+            var currentWeatherIcon = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
+            var currentTemp = weatherData.main.temp;
+            var currentHumidity = weatherData.main.humidity;
+            var currentWindSpeed = weatherData.wind.speed
+            var currentWindDir = JSON.stringify(weatherData.wind.deg);
+            var currentWeatherSummary = weatherData.weather[0].description;
+            
+            
+            
+            
+            localStorage.setItem(keyName, JSON.stringify(cityName));
+            localStorageCityHistory.push(cityName)
+           
+            console.log(keyName, cityName)
+            
+            renderForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary);
+
+     
+
+    //   renderLocalStorage();
+    })
+}
+
+function renderForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary) {
     currentWeather.innerHTML = "";
 
     var todayWeatherDate = document.createElement('h4')
@@ -47,48 +100,7 @@ function renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentT
     return;
 }
 
-//if city button true then renderTodayWeather using the text content of the button as the cityName being searched by API and run getWeatherByCity
-function handleSearchButton(event) {
-    event.preventDefault();
-    let cityName = document.getElementById("searched-city-input");
-    getWeatherByCity(event, cityName)//passes cityName to getWeatherByCity
-};
 
-//Call to API passing the searched city name and concat it into the API along with the key and conversion to imperial system format.
-function getWeatherByCity(cityName) {
-    // event.preventDefault();
-    // var searchCity = document.getElementById("searched-city-input").value;
-    var openWeatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + openWeatherApiKey + "&units=imperial";
-
-    currentWeather.innerHTML = "";
-   
-    fetch(openWeatherUrl)
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (weatherData) {
-            
-            var weatherDate = weatherData.dt;
-            weatherDate = dayjs.unix(weatherData.dt).format('MMM D, YYYY');
-            var cityName = weatherData.name;
-            var currentTemp = weatherData.main.temp;
-            var currentHumidity = weatherData.main.humidity;
-            var currentWindSpeed = weatherData.wind.speed
-            var currentWindDir = JSON.stringify(weatherData.wind.deg);
-            var currentWeatherSummary = weatherData.weather[0].description;
-            var currentWeatherIcon = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
-            
-            renderTodayForecast(weatherDate, cityName, currentWeatherIcon, currentTemp, currentHumidity, currentWindSpeed, currentWindDir, currentWeatherSummary);
-
-      var keyName = "city-" + cityKeys.length;
-    //   localStorage.setItem(keyName, JSON.stringify(cityName));
-      cityKeys.push(keyName);
-      localStorage.setItem(keyName, JSON.stringify(cityName));
-      console.log(keyName, cityName)
-
-      renderLocalStorage();
-    })
-}
 
 function renderLocalStorage() {
     var searchHistoryEl = document.getElementById("city-history");
@@ -114,9 +126,9 @@ function clearHistory(event) {
     localStorageCityHistory = [];
 };
 
-//Event listener for city search Button
-searchWeatherButton.addEventListener('click', handleCitySearch);
+//Event listener for search button
 
+//Event listener for clear history button with call to clear function and refresh
 clearCityHistoryButton.addEventListener('click', function(event) {
     clearHistory(event)
     location.reload();
